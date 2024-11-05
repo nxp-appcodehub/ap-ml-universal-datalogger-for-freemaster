@@ -1,0 +1,125 @@
+/* Poppins */
+
+@font-face {
+    font-family: "Poppins";
+    src: url("fonts/Poppins-Regular.ttf") format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Poppins";
+    src: url('fonts/Poppins-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: "Poppins";
+    src: url('fonts/Poppins-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: bold;
+}
+
+body { font-family: "Poppins"; }
+
+.glow-danger {
+    animation: glow-danger-animation 1s infinite alternate;
+}
+
+@keyframes glow-danger-animation {
+    from {
+      box-shadow: 0 0 10px -10px rgba(var(--bs-danger-rgb),var(--bs-bg-opacity));
+    }
+    to {
+      box-shadow: 0 0 10px 10px rgba(var(--bs-danger-rgb),var(--bs-bg-opacity));
+    }
+}
+
+.disabled-content {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+
+
+.progresses {
+    display: flex;
+    align-items: center;
+}
+
+.line-done {
+    width: 60px;
+    height: 6px;
+    background: #63d19e;
+}
+
+.step-done {
+    display: flex;
+    background-color: #63d19e;
+    color: #fff;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.line-in-progress {
+    width: 60px;
+    height: 6px;
+    background: #8086d8;
+}
+
+.step-in-progress {
+    display: flex;
+    background-color: #8086d8;
+    color: #fff;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.line-idle {
+    width: 60px;
+    height: 6px;
+    background: #d4d4d4;
+}
+
+.step-idle {
+    display: flex;
+    background-color: #d4d4d4;
+    color: #fff;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.step-error {
+    display: flex;
+    background-color: rgba(var(--bs-danger-rgb),var(--bs-bg-opacity));
+    color: #fff;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.line-dashed {
+    width: 60px;
+    height: 6px;
+    background: repeating-linear-gradient(
+        -45deg,
+        #d4d4d4 0px,
+        #d4d4d4 6px,
+        transparent 6px,
+        transparent 12px
+      );
+}

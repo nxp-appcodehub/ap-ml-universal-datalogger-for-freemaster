@@ -1,0 +1,244 @@
+<!--
+Copyright 2024 NXP
+
+SPDX-License-Identifier: BSD-3-Clause
+
+Created by Motion Control & Functional Safety Team, Roznov, Czechia
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ML Universal Datalogger</title>
+
+    <!-- ================================================================================
+    CSS
+    ================================================================================ -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="main()">
+    <!-- ================================================================================
+    Navigation
+    ================================================================================ -->
+    <nav class="navbar bg-body-secondary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="https://mcuxpresso.nxp.com/static/icon/nxp-logo-color.svg" width="100" alt="NXP logo"></a>
+            <button id="eBtnConfSuccess" class="navbar-toggler position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation" title="Your configuration seems okay." style="display: none;">
+                <i class="fa-solid fa-sliders fa-lg py-3"></i>
+                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle"></span>
+            </button>
+            <button id="eBtnConfError" class="navbar-toggler position-relative glow-danger" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation" title="Your configuration is incorrect!" style="display: none;">
+                <i class="fa-solid fa-sliders fa-lg py-3"></i>
+                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Configuration&nbsp;<i id="eConfigTitleIcon" class="fa-solid fa-circle-xmark text-danger"></i></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <small>Here is parsed result of your configuration file and its loading status. <strong>This preview is READ-ONLY!</strong></small>
+                    <hr>
+                    <div id="eConfigPreview">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================================================================================
+    Content
+    ================================================================================ -->
+    <div class="m-2 mx-auto p-3 bg-body-secondary rounded col-lg-10 col-sm-12">
+        <div class="form-check form-switch">
+            <label class="form-check-label" for="eInputToggleHelp">
+                <strong>Help</strong>
+            </label>
+            <input id="eInputToggleHelp" checked class="form-check-input bg-info" type="checkbox">
+        </div>
+        <hr class="my-2">
+        <p class="h2 text-center fw-bold"><i class="fas fa-file-waveform"></i>&nbsp;ML Universal Datalogger&nbsp;<i class="fas fa-download"></i></p>
+        <hr class="my-2">
+
+        <div id="eMessage" class="alert d-none" role="alert"></div>
+
+        <div id="eMainContentHolder" style="display: none;">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-check form-switch">
+                                    <input id="eInputPreserveConfig" class="form-check-input" type="checkbox">
+                                    <label class="form-check-label" for="eInputPreserveConfig">
+                                        Configuration
+                                        &nbsp;
+                                        <i class="app-help fas fa-circle-question text-info" title="If enabled the configuration is preserved with every change done by you or the datalogger app. Otherwise all the changes are temporary and are not saved into the configuration file."></i>
+                                    </label>
+                                </div>                            
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="form-control text-center fw-bold">
+                                        <i class="fas fa-folder text-secondary"></i>
+                                        &nbsp;
+                                        Destination folder
+                                        &nbsp;
+                                        <i class="app-help fas fa-circle-question text-info" title="Path to folder where files should be saved. You can use relative paths from FreeMASTER project location (It is recommended to use relative paths, because FreeMASTER blocks several paths like ones starting with 'C://')."></i>
+                                    </span>
+                                    <span class="input-group-text">/</span>
+                                    <span class="form-control text-center fw-bold">
+                                        <i class="fas fa-file text-secondary"></i>
+                                        &nbsp;
+                                        File prefix
+                                        &nbsp;
+                                        <i class="app-help fas fa-circle-question text-info" title="Prefix for each file which will be appended with current file number."></i>
+                                    </span>
+                                    <span class="form-control text-center fw-bold">
+                                        <i class="fas fa-list-ol text-secondary"></i>
+                                        &nbsp;
+                                        File counter
+                                        &nbsp;
+                                        <i class="app-help fas fa-circle-question text-info" title="File counter with left-padded zeros. Number of zeros can be changed in configuration file."></i>
+                                    </span>
+                                    <span class="input-group-text">.csv</span>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="eInputSavingDestination">
+                                    <span class="input-group-text">/</span>
+                                    <input type="text" class="form-control" placeholder="record_" id="eInputSavingName">
+                                    <input type="number" class="form-control" maxlength="6" id="eInputSavingOffset">
+                                    <span class="input-group-text">.csv</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div id="eDivSectionMeasurement" class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span>
+                                    Measurement control
+                                    &nbsp;
+                                    <i class="app-help fas fa-circle-question text-info" title="Set number of required measurement cycles here."></i>
+                                </span>                            
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Measured</span>
+                                    <input type="number" class="input-group-text form-control text-center bg-light" disabled value="0" id="eMeasuredCount">
+                                    <span class="input-group-text">of total</span>
+                                    <input type="number" min="1" value="1" class="form-control text-center" id="eToBeMeasuredCount">
+                                    <span class="input-group-text">cycles</span>
+                                </div>
+                                <div class="text-center">
+                                    <strong>
+                                        Total progress
+                                        &nbsp;
+                                        <i class="app-help fas fa-circle-question text-info" title="Progress of all set measurement cycles."></i>
+                                    </strong>
+                                    <div class="progress mt-1">
+                                        <div id="eProgressMeasurement" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><span id="eProgressMeasurementText"></span></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="text-center">
+                                    <span>Current measurement progress&nbsp;<i class="app-help fas fa-circle-question text-info" title="Progress of current measurement cycle. It is set inside of C code by mlud_progressCurrent variable."></i>&nbsp;(<span id="eSamplesStatus">0/1</span>)</span>
+                                    <div class="progress mt-1">
+                                        <div id="eProgressMeasurementCurrent" class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><span id="eProgressMeasurementText"></span></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-grid gap-2">
+                                    
+                                    <div class="container d-flex justify-content-center align-items-center">
+                                        <div id="eProgressBarMeasurementState" class="progresses">                                            
+                                        </div>
+                                    </div>
+
+                                    <span class="badge bg-secondary"><span id="eMeasurementStatus">Disabled</span>&nbsp;<i class="app-help fas fa-circle-question text-info" title="Progress of all set measurement cycles."></i></span>
+                                    <button id="eButtonMeasurementControl" type="button" class="btn btn-outline-success">
+                                        <span id="eButtonMeasurementControlText">Start measurement</span>
+                                        &nbsp;
+                                        <i class="app-help fas fa-circle-question text-info" title="Show actual state and value of control variable of actually measured application. You can stop application and measurement cycle by clicking on emergency stop button."></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div id="eDivSectionApp" class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Application status
+                                &nbsp;
+                                <i class="app-help fas fa-circle-question text-info" title="Show actual state and value of control variable of actually measured application. You can stop application and measurement cycle by clicking on emergency stop button."></i>
+                                &nbsp;
+                                <span id="eAppControl"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="d-grid gap-2">
+                                    <span id="eAppStatus" class="badge bg-secondary">Disabled</span>
+                                    <button id="eButtonEmergencyStop" type="button" class="btn btn-outline-danger fw-bold py-5">EMERGENCY STOP</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <!-- ================================================================================
+    Footer
+    ================================================================================ -->
+    <div class="container">
+        <footer class="py-3 my-4 border-top">
+            <p class="text-center text-body-secondary my-0">©2006-2024 NXP Semiconductors. All rights reserved.</p>
+            <p class="text-center text-body-secondary my-0">Created by Motion Control & Functional Safety Team, Roznov, Czechia.</p>
+        </footer>
+    </div>
+
+    <!-- ================================================================================
+    JS
+    ================================================================================ -->
+    <script type="text/javascript" src="js/libs/freemaster-client.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/libs/simple-jsonrpc-js.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
+</body>
+
+</html>

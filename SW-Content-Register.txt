@@ -1,0 +1,12 @@
+NXP Software Content Register
+ 
+Package:                   ap-ml-universal-datalogger-for-freemaster
+Version:                   1.0.0
+Outgoing License:          LA_OPT_Online Code Hosting NXP_Software_License - v1.2 October 2023
+License File:              LICENSE.txt
+Description and comments:  This software allows the user to perform tests and record data on any FreeMASTER-enabled MCU by automatically running user-implemented scenarios on the MCU side.
+Release Location:          https://github.com/nxp-appcodehub/ap-ml-universal-datalogger-for-freemaster
+Origin:                    NXP (proprietary)
+                           NXP (BSD-3-Clause)
+                           ARM CMSIS 5.8.0 (Apache-2.0) - https://github.com/ARM-software/CMSIS_5/releases/tag/5.8.0
+                           Poppins v4.003 (OFL-1.1 license) -  https://github.com/itfoundry/Poppins/releases/tag/v4.003

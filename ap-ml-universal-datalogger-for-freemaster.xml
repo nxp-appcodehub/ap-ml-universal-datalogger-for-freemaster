@@ -1,0 +1,25 @@
+<data:item xmlns:data="data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="data ../../xsd/alp.xsd" type="sw_pack" format="projectfile" versionSchema="1.0.0" name="ML Universal Datalogger for FreeMASTER" uuid="df942553-1c58-4692-bb98-71f6e7dbe42f">
+    <display_title>
+        ML Universal Datalogger for FreeMASTER
+    </display_title>
+    <overview>
+        <![CDATA[This software allows the user to perform tests and record data on any FreeMASTER-enabled MCU by automatically running user-implemented scenarios on the MCU side.]]>
+    </overview>
+    <toolchains>
+        <toolchain name="mcux"></toolchain>
+    </toolchains>
+    <families>
+        <family name="mcx"></family>
+    </families>
+    <nxp_compatible_hw>
+        <hw id="FRDM-MCXN947"></hw>
+        <custom_hw></custom_hw>
+    </nxp_compatible_hw>
+    <peripherals>
+        <peripheral name="uart"></peripheral>
+    </peripherals>
+    <categories>
+        <category name="aiml"></category>
+        <category name="tools"></category>
+    </categories>
+</data:item>

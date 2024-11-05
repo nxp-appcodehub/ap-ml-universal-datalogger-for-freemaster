@@ -1,0 +1,34 @@
+<configuration>
+  <!--File export-->
+  <file>
+    <folder value="measured_data"/>
+    <prefix value="class_x_y_"/>
+    <offset value="1"/>
+    <paddingZerosCount value="6"/>
+  </file>
+  <!--Application control-->
+  <app>
+    <!--Variable containing the application status-->
+    <stateVariable symbol="ml_myAppState" faultValue="2"/>
+    <!--Variable containing the actual control value (e.g. speed of motor)-->
+    <controlVariable symbol="ml_myAppSpeed" unit="RPM"/>
+    <!--Variables and their values to be executed in order to start application-->
+    <startSequence>
+      <variable symbol="ml_myAppState" value="1"/>
+    </startSequence>
+    <!--Variables and their values to be executed in order to stop application-->
+    <stopSequence>
+      <variable symbol="ml_myAppState" value="0"/>
+    </stopSequence>
+    <!--Delay between application start and beginning of measurement-->
+    <startDelayMs value="5000"/>
+  </app>
+  <!--Measurement control-->
+  <measurement>
+    <!--Variables to be downloaded and their name in CSV file-->
+    <variables>
+      <variable symbol="ml_xBuffer" name="x"/>
+      <variable symbol="ml_yBuffer" name="y"/>
+    </variables>
+  </measurement>
+</configuration>
